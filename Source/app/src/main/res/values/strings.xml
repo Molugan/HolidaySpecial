@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HolidaySpecial</string>
+    <string name="edit_message">Movie name</string>
+    <string name="button_addMovie">Add</string>
+</resources>
