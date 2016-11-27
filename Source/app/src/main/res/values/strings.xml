@@ -2,4 +2,5 @@
     <string name="app_name">HolidaySpecial</string>
     <string name="edit_message">Movie name</string>
     <string name="button_addMovie">Add</string>
+    <string name="default_synopsis">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</string>
 </resources>

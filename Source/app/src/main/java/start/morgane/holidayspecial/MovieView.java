@@ -1,6 +1,6 @@
 package start.morgane.holidayspecial;
 
-import start.morgane.holidayspecial.R;
+import start.morgane.holidayspecial.Movie;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -20,11 +20,13 @@ public class MovieView extends LinearLayout {
     private View mValue;
     private ImageView mImage;
     private TextView movieTitle;
+    private TextView movieSynopsis;
 
     public MovieView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MovieView);
         String movieName = a.getString(R.styleable.MovieView_name);
+        String synopsis = a.getString(R.styleable.MovieView_synopsis);
         int valueColor = a.getColor(R.styleable.MovieView_imgColor, getResources().getColor(android.R.color.holo_blue_light));
         a.recycle();
 
@@ -34,13 +36,18 @@ public class MovieView extends LinearLayout {
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
 
-        movieTitle = (TextView) getChildAt(1);
+        movieTitle = (TextView) findViewById(R.id.name);
         movieTitle.setText(movieName);
 
-        mValue = (View) getChildAt(0);
-        mValue.setBackgroundColor(valueColor);
+        movieSynopsis = (TextView) findViewById(R.id.synopsis);
+        movieSynopsis.setText(synopsis);
 
-        mImage = (ImageView) getChildAt(2);
+        mImage =(ImageView) findViewById(R.id.poster);
+        mImage.setImageResource(R.drawable.chatcool);
+    }
+
+    public void UpdateFromMovie(Movie movie){
+
     }
 
     public MovieView(Context context) {

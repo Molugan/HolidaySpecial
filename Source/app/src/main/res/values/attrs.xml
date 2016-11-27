@@ -4,5 +4,6 @@
         <attr name="name" format="string" />
         <attr name="imgSource" format="string"/>
         <attr name="imgColor" format="color"/>
+        <attr name="synopsis" format="string"/>
     </declare-styleable>
 </resources>

@@ -3,6 +3,7 @@ package start.morgane.holidayspecial;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.Context;
 import android.view.ViewGroup;
@@ -12,11 +13,15 @@ import start.morgane.holidayspecial.Movie;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
+    public int mSelectedItem;
+
     public MovieAdapter(Context context, ArrayList<Movie> movies) {
 
         super(context, 0, movies);
+        mSelectedItem = -1;
 
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -41,6 +46,12 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         tvName.setText(movie.name);
 
         // Return the completed view to render on screen
+        if(position == mSelectedItem){
+            convertView.setBackgroundColor(android.graphics.Color.GRAY);
+        }
+        else{
+            convertView.setBackgroundColor(android.graphics.Color.WHITE);
+        }
 
         return convertView;
 
