@@ -3,4 +3,5 @@
     <string name="edit_message">Movie name</string>
     <string name="button_addMovie">Add</string>
     <string name="default_synopsis">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</string>
+    <string name="default_movie">No movie</string>
 </resources>

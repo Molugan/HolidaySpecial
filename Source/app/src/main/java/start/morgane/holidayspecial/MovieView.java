@@ -46,8 +46,15 @@ public class MovieView extends LinearLayout {
         mImage.setImageResource(R.drawable.chatcool);
     }
 
-    public void UpdateFromMovie(Movie movie){
+    public void updateFromMovie(Movie movie){
 
+        movieTitle.setText(movie.name);
+        movieSynopsis.setText(movie.synopsis);
+    }
+
+    public void reset(){
+        movieTitle.setText(R.string.default_movie);
+        movieSynopsis.setText(R.string.default_synopsis);
     }
 
     public MovieView(Context context) {

@@ -14,7 +14,7 @@ public class Movie {
 
     public Movie(String title){
         name = title;
-        synopsis = "";
+        synopsis = "Unknown synopsis";
         imgID = "";
     }
 }

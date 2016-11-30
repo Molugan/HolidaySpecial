@@ -20,6 +20,7 @@ public class MainScreen extends AppCompatActivity {
 
     private ArrayList<Movie> movieList;
     private MovieAdapter movieAdapter;
+    private MovieView movieView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,9 @@ public class MainScreen extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
                 view.setSelected(true);
                 MovieAdapter mp = (MovieAdapter) parent.getAdapter();
-                MovieView movieView = (MovieView) findViewById(R.id.movie_screen);
+                movieView = (MovieView) findViewById(R.id.movie_screen);
 
+                movieView.updateFromMovie(movieList.get(position));
                 movieAdapter.mSelectedItem = position;
                 movieAdapter.notifyDataSetChanged();
             }});
@@ -50,9 +52,37 @@ public class MainScreen extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.edit_message);
         Movie newMovie = new Movie(editText.getText().toString());
         movieAdapter.add(newMovie);
-        //MovieView currentMovie = (MovieView) movieList.getChildAt(0);
+        editText.setText("");
+    }
 
-        //currentMovie.SetMovieTitle(editText.getText().toString());
+    public void removeMovie(View view){
+        int selectedMovie = movieAdapter.mSelectedItem;
+
+        if(selectedMovie == -1)
+        {
+            return;
+        }
+
+        movieList.remove(selectedMovie);
+        selectedMovie--;
+
+        if(selectedMovie < 0 && movieList.size() > 0){
+            selectedMovie = 0;
+        }
+
+        movieAdapter.mSelectedItem = selectedMovie;
+
+        if(selectedMovie > -1){
+            ListView listV = (ListView) findViewById(R.id.movie_list);
+            listV.setSelection(selectedMovie);
+            movieView = (MovieView) findViewById(R.id.movie_screen);
+
+            movieView.updateFromMovie(movieList.get(selectedMovie));
+        }
+        else{
+            movieView.reset();
+        }
+        movieAdapter.notifyDataSetChanged();
     }
 
     public void getMovie(View view){
