@@ -1,4 +1,6 @@
 package start.morgane.holidayspecial;
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,7 +40,7 @@ public class Movie {
         year = json.getString("Year");
         type = json.getString("Type");
         poster = json.getString("Poster");
-        imdbId = json.getString("imdbId");
+        imdbId = json.getString("imdbID");
         /* Optional parameters. */
         genre = json.optString("Genre");
         runtime = json.optString("Runtime");
@@ -52,6 +54,6 @@ public class Movie {
         imdbVotes = json.optString("imdbVotes");
     }
 
-    public Movie(String title) {
+    public Movie() {
     }
 }

@@ -1,5 +1,8 @@
 package start.morgane.holidayspecial;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
@@ -11,7 +14,7 @@ import org.json.*;
  * Created by Henri Chataing on 30/11/16.
  */
 
-public class MovieSearchRequest {
+public class MovieSearchRequest extends AsyncTask<Void, Void, List<Movie>> {
 
     public String title;
     public String type;
@@ -20,6 +23,7 @@ public class MovieSearchRequest {
     static String baseURL = "https://www.omdbapi.com/?r=json&";
 
     public MovieSearchRequest(String title) {
+        Log.d("MovieSearch", "request for title " + title);
         this.title = title;
     }
 
@@ -33,18 +37,30 @@ public class MovieSearchRequest {
         return new URL(fullURL.toString());
     }
 
-    public List<Movie> results() {
+    protected List<Movie> doInBackground(Void... _) {
         LinkedList<Movie> movies = new LinkedList<Movie>();
+        InputStream response = null;
         /* Fetch result from the omdb API. */
         try {
-            URLConnection connection = url().openConnection();
-            InputStream response = connection.getInputStream();
+            HttpURLConnection connection = (HttpURLConnection) url().openConnection();
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(10000 /* milliseconds */);
+            connection.setConnectTimeout(15000 /* milliseconds */);
+            response = connection.getInputStream();
             /*
              * According to the github project the JSONTokener should be able to parse directly
              * from the input stream.
              * https://github.com/stleary/JSON-java/blob/master/JSONTokener.java
              */
-            JSONTokener tokener = new JSONTokener(response.toString());
+            StringBuilder jsonSringBuilder = new StringBuilder();
+            BufferedReader jsonStreamReader = new BufferedReader(
+                    new InputStreamReader(response, "UTF-8"));
+
+            String line;
+            while ((line = jsonStreamReader.readLine()) != null)
+                jsonSringBuilder.append(line);
+            Log.d("MovieSearch", jsonSringBuilder.toString());
+            JSONTokener tokener = new JSONTokener(jsonSringBuilder.toString());
             JSONObject json = new JSONObject(tokener);
             /*
              * Search result should include the fields :
@@ -52,16 +68,24 @@ public class MovieSearchRequest {
              *   "totalResults"
              *   "Response"
              */
-            JSONArray results = json.getJSONArray("Results");
+            JSONArray results = json.getJSONArray("Search");
             for (int r = 0; r < results.length(); r++) {
                 Movie movie = new Movie();
                 try {
                     movie.parse(results.getJSONObject(r));
                     movies.addLast(movie);
                 } catch (JSONException ex) {
+                    Log.e("MovieSearch", "JSON excepion caught parsing search result");
                 }
             }
-        } catch (Exception ex) {
+        } catch (JSONException ex) {
+            Log.e("MovieSearch", "JSON exception caught");
+        } catch (IOException ex) {
+            Log.e("MovieSearch", "IO exception caught");
+        } finally {
+            Log.d("MovieSearch", "search complete");
+            //    response.close();
+            // if (response != null)
         }
         return movies;
     }
