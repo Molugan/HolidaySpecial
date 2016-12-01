@@ -15,6 +15,7 @@ import start.morgane.holidayspecial.Movie;
 import start.morgane.holidayspecial.MovieAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -50,9 +51,16 @@ public class MainScreen extends AppCompatActivity {
 
     public void addMovie(View view) {
         EditText editText = (EditText) findViewById(R.id.edit_message);
-        Movie newMovie = new Movie(editText.getText().toString());
-        movieAdapter.add(newMovie);
+        MovieSearchRequest request = new MovieSearchRequest(editText.getText().toString());
+        List<Movie> movies = request.results();
+
+        if (movies.isEmpty())
+            return;
+        movieAdapter.add(movies.get(0));
         editText.setText("");
+
+        //MovieView currentMovie = (MovieView) movieList.getChildAt(0);
+        //currentMovie.SetMovieTitle(editText.getText().toString());
     }
 
     public void removeMovie(View view){
@@ -85,10 +93,9 @@ public class MainScreen extends AppCompatActivity {
         movieAdapter.notifyDataSetChanged();
     }
 
-    public void getMovie(View view){
-        if(movieList.size() == 0){
+    public void getMovie(View view) {
+        if (movieList.isEmpty())
             return;
-        }
 
         //ListView lv = (ListView) findViewById(R.id.movie_list);
         //int position = lv.getPositionForView(view);

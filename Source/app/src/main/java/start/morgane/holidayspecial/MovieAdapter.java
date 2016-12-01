@@ -31,20 +31,21 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_movie_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.view_movie_item, parent, false);
         }
 
         // Lookup view for data population
         TextView tvName = (TextView) convertView.findViewById(R.id.name);
 
         // Populate the data into the template view using the data object
-        tvName.setText(movie.name);
+        tvName.setText(movie.title);
 
         // Return the completed view to render on screen
-        if(position == mSelectedItem){
+        if (position == mSelectedItem) {
             convertView.setBackgroundColor(android.graphics.Color.GRAY);
         }
-        else{
+        else {
             convertView.setBackgroundColor(android.graphics.Color.WHITE);
         }
 
