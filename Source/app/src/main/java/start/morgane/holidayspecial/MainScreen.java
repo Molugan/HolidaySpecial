@@ -2,6 +2,7 @@ package start.morgane.holidayspecial;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,10 @@ import start.morgane.holidayspecial.Movie;
 import start.morgane.holidayspecial.MovieAdapter;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.ExecutionException;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -50,12 +55,30 @@ public class MainScreen extends AppCompatActivity {
 
     public void addMovie(View view) {
         EditText editText = (EditText) findViewById(R.id.edit_message);
-        Movie newMovie = new Movie(editText.getText().toString());
-        movieAdapter.add(newMovie);
+        MovieSearchRequest request = new MovieSearchRequest(editText.getText().toString());
+        request.execute();
+        List<Movie> movies = null;
+        try {
+            movies = request.get();
+        } catch (InterruptedException ex) {
+            Log.d("MainScreen", "search was interrupted");
+        } catch (ExecutionException ex) {
+            Log.d("MainScreen", "search failed for an unknown reason");
+        }
+
+        if (movies == null || movies.isEmpty())
+            return;
+        ListIterator<Movie> iterator = movies.listIterator();
+        while (iterator.hasNext()) {
+            movieAdapter.add(iterator.next());
+        }
         editText.setText("");
+
+        //MovieView currentMovie = (MovieView) movieList.getChildAt(0);
+        //currentMovie.SetMovieTitle(editText.getText().toString());
     }
 
-    public void removeMovie(View view){
+    public void removeMovie(View view) {
         int selectedMovie = movieAdapter.mSelectedItem;
 
         if(selectedMovie == -1)
@@ -85,10 +108,9 @@ public class MainScreen extends AppCompatActivity {
         movieAdapter.notifyDataSetChanged();
     }
 
-    public void getMovie(View view){
-        if(movieList.size() == 0){
+    public void getMovie(View view) {
+        if (movieList.isEmpty())
             return;
-        }
 
         //ListView lv = (ListView) findViewById(R.id.movie_list);
         //int position = lv.getPositionForView(view);
