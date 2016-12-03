@@ -1,4 +1,4 @@
-package com.teamwhaterver.holidayspecial;
+package com.whatever.holidayspecial;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

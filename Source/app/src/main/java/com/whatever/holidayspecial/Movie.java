@@ -1,4 +1,4 @@
-package com.teamwhaterver.holidayspecial;
+package com.whatever.holidayspecial;
 
 import org.json.JSONException;
 import org.json.JSONObject;

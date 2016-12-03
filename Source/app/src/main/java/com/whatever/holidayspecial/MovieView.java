@@ -1,4 +1,4 @@
-package com.teamwhaterver.holidayspecial;
+package com.whatever.holidayspecial;
 
 import android.content.Context;
 import android.content.res.TypedArray;
