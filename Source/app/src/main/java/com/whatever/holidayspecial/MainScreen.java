@@ -70,7 +70,16 @@ public class MainScreen extends AppCompatActivity {
 
 
     public void searchMovie(View view) {
+
         EditText editText = (EditText) findViewById(R.id.edit_message);
+
+        //Hide the keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+
+        //Clear the list
+        movieList.clear();
+
         MovieSearchRequest request = new MovieSearchRequest(editText.getText().toString());
         request.execute();
         List<Movie> movies = null;
@@ -81,13 +90,6 @@ public class MainScreen extends AppCompatActivity {
         } catch (ExecutionException ex) {
             Log.d("MainScreen", "search failed for an unknown reason");
         }
-
-        //Hide the keyboard
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-
-        //Clear the list
-        movieList.clear();
 
         //Clear the text bar
         editText.setText("");
