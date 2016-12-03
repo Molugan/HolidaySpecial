@@ -17,9 +17,10 @@
     <com.whatever.holidayspecial.MovieView
         android:id="@+id/movie_screen"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         custom:name="Interstellar"
         custom:synopsis="@string/default_synopsis"
+        custom:releaseDate="11 November 2016 (USA)"
         custom:imgColor="@android:color/holo_green_dark"/>
         <Button android:id="@+id/set_date"
             android:layout_width="match_parent"
@@ -29,5 +30,6 @@
         android:id="@+id/movie_list"
         android:layout_width="match_parent"
         android:layout_height="404dp"
+        android:layout_marginTop="3dp"
         />
 </LinearLayout>

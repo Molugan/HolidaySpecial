@@ -20,12 +20,14 @@ public class MovieView extends LinearLayout {
     private ImageView mImage;
     private TextView movieTitle;
     private TextView movieSynopsis;
+    private TextView releaseDate;
 
     public MovieView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MovieView);
         String movieName = a.getString(R.styleable.MovieView_name);
         String synopsis = a.getString(R.styleable.MovieView_synopsis);
+        String date = a.getString(R.styleable.MovieView_releaseDate);
         int valueColor = a.getColor(R.styleable.MovieView_imgColor, getResources().getColor(android.R.color.holo_blue_light));
         a.recycle();
 
@@ -43,6 +45,9 @@ public class MovieView extends LinearLayout {
 
         mImage =(ImageView) findViewById(R.id.poster);
         mImage.setImageResource(R.drawable.shrek);
+
+        releaseDate = (TextView) findViewById(R.id.releaseDate);
+        releaseDate.setText(date);
     }
 
     public void updateFromMovie(Movie movie){
