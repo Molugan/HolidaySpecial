@@ -1,13 +1,18 @@
 package com.whatever.holidayspecial;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
+import android.view.inputmethod.EditorInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +48,28 @@ public class MainScreen extends AppCompatActivity {
                 movieAdapter.mSelectedItem = position;
                 movieAdapter.notifyDataSetChanged();
             }});
+
+        EditText editText = (EditText) findViewById(R.id.edit_message);
+        //editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent)
+            {
+                if ((keyEvent==null && actionId==EditorInfo.IME_ACTION_GO) || (actionId == EditorInfo.IME_NULL
+                        && keyEvent.getAction() == KeyEvent.ACTION_DOWN))
+                {
+                    searchMovie(textView);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
-    public void addMovie(View view) {
+    public void searchMovie(View view) {
         EditText editText = (EditText) findViewById(R.id.edit_message);
         MovieSearchRequest request = new MovieSearchRequest(editText.getText().toString());
         request.execute();
@@ -59,16 +82,32 @@ public class MainScreen extends AppCompatActivity {
             Log.d("MainScreen", "search failed for an unknown reason");
         }
 
-        if (movies == null || movies.isEmpty())
-            return;
-        ListIterator<Movie> iterator = movies.listIterator();
-        while (iterator.hasNext()) {
-            movieAdapter.add(iterator.next());
-        }
+        //Hide the keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+
+        //Clear the list
+        movieList.clear();
+
+        //Clear the text bar
         editText.setText("");
 
-        //MovieView currentMovie = (MovieView) movieList.getChildAt(0);
-        //currentMovie.SetMovieTitle(editText.getText().toString());
+        //Refill it with new results
+        if (movies == null || movies.isEmpty())
+        {
+            //Don't forget to notify the adapter
+            movieAdapter.notifyDataSetChanged();
+
+            return;
+        }
+
+        ListIterator<Movie> iterator = movies.listIterator();
+        while (iterator.hasNext()) {
+            movieList.add(iterator.next());
+        }
+
+        //Don't forget to notify the adapter
+        movieAdapter.notifyDataSetChanged();
     }
 
     public void removeMovie(View view) {

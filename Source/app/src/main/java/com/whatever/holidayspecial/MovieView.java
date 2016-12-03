@@ -42,7 +42,7 @@ public class MovieView extends LinearLayout {
         movieSynopsis.setText(synopsis);
 
         mImage =(ImageView) findViewById(R.id.poster);
-        mImage.setImageResource(R.drawable.chatcool);
+        mImage.setImageResource(R.drawable.shrek);
     }
 
     public void updateFromMovie(Movie movie){
