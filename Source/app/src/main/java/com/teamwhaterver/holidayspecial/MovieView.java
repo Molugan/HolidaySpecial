@@ -1,6 +1,5 @@
-package start.morgane.holidayspecial;
+package com.teamwhaterver.holidayspecial;
 
-import start.morgane.holidayspecial.Movie;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;

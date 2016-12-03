@@ -1,4 +1,4 @@
-package start.morgane.holidayspecial;
+package com.teamwhaterver.holidayspecial;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
+
 import org.json.*;
 
 /**

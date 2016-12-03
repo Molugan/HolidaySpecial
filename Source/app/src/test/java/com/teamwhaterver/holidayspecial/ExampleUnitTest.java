@@ -1,4 +1,4 @@
-package start.morgane.holidayspecial;
+package com.teamwhaterver.holidayspecial;
 
 import org.junit.Test;
 

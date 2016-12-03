@@ -1,10 +1,7 @@
-package start.morgane.holidayspecial;
-import android.util.Log;
+package com.teamwhaterver.holidayspecial;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Created by Morgane on 26/11/16.

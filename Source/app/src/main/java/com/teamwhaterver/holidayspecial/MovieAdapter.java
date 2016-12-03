@@ -1,15 +1,12 @@
-package start.morgane.holidayspecial;
+package com.teamwhaterver.holidayspecial;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.Context;
 import android.view.ViewGroup;
 import java.util.ArrayList;
-
-import start.morgane.holidayspecial.Movie;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
 

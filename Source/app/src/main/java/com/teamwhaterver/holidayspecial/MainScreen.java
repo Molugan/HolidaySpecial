@@ -1,22 +1,15 @@
-package start.morgane.holidayspecial;
+package com.teamwhaterver.holidayspecial;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.content.Context;
 import android.widget.AdapterView.OnItemClickListener;
 
-import start.morgane.holidayspecial.Movie;
-import start.morgane.holidayspecial.MovieAdapter;
-
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ExecutionException;
