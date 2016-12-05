@@ -54,6 +54,7 @@ public class MovieManager {
      * Request for the manager to load an image into the selected ImageView.
      */
     public void loadImage(ImageView view, String url) {
+        Log.d("MovieManager", "load image from " + url);
         ImageTask task = new ImageTask(this, view);
         task.execute(url);
     }
@@ -102,6 +103,7 @@ public class MovieManager {
                 connection.setConnectTimeout(15000 /* milliseconds */);
                 response = connection.getInputStream();
                 bitmap = BitmapFactory.decodeStream(response);
+                manager.complete(this);
             } catch (MalformedURLException ex) {
                 Log.e("ImageTask", "malformed URL [" + urls[0] + "]");
             } catch (IOException ex) {
