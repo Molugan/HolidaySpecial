@@ -45,7 +45,7 @@ public class MovieView extends LinearLayout {
         movieSynopsis = (TextView) findViewById(R.id.synopsis);
         movieSynopsis.setText(synopsis);
 
-        moviePoster =(ImageView) findViewById(R.id.poster);
+        moviePoster = (ImageView) findViewById(R.id.poster);
         moviePoster.setImageResource(R.drawable.shrek);
 
         releaseDate = (TextView) findViewById(R.id.releaseDate);
@@ -55,6 +55,7 @@ public class MovieView extends LinearLayout {
     public void updateFromMovie(Movie movie) {
         movieTitle.setText(movie.title);
         movieSynopsis.setText(movie.synopsis);
+        releaseDate.setText(movie.released);
         ImageTask task = new ImageTask(moviePoster);
         task.execute(movie.poster);
     }

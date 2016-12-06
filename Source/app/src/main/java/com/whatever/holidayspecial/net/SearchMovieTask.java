@@ -48,6 +48,7 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
      * as possible.
      * @param titles movie titles to search for
      */
+    @Override
     protected Void doInBackground(String... titles) {
         InputStream response = null;
         Log.d("SearchMovieTask", "search for title " + titles[0]);
@@ -76,7 +77,7 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
              * Search result should include the fields :
              *   "Search"
              *   "totalResults"
-             *   "Response"
+             *   "Response"public
              */
             JSONArray results = json.getJSONArray("Search");
             for (int r = 0; r < results.length(); r++) {
@@ -94,8 +95,12 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
             Log.e("SearchMovieTask", "IO exception caught");
         } finally {
             Log.d("SearchMovieTask", "search complete");
-            // if (response != null)
-            //    response.close();
+            try {
+                if (response != null)
+                    response.close();
+                response = null;
+            } catch (IOException ex) {
+            }
         }
         return null;
     }
@@ -105,8 +110,13 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
      * @param movies next search results
      */
     @Override
-    public void onProgressUpdate(Movie... movies) {
+    protected void onProgressUpdate(Movie... movies) {
         adapter.addAll(movies);
         adapter.notifyDataSetChanged();
+        /**
+         * Send a request at the same time for full movie information.
+         */
+        RequestMovieInfoTask task = new RequestMovieInfoTask();
+        task.execute(movies);
     }
 }
