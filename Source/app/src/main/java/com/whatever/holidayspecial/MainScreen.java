@@ -59,7 +59,7 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent)
             {
-                if ((keyEvent==null && actionId==EditorInfo.IME_ACTION_GO) || (actionId == EditorInfo.IME_NULL
+                if ((keyEvent==null && actionId==EditorInfo.IME_ACTION_SEARCH) || (actionId == EditorInfo.IME_NULL
                         && keyEvent.getAction() == KeyEvent.ACTION_DOWN))
                 {
                     searchMovie(textView);
@@ -75,7 +75,7 @@ public class MainScreen extends AppCompatActivity {
 
         // Prepare the search task.
         EditText editText = (EditText) findViewById(R.id.edit_message);
-        SearchMovieTask task = new SearchMovieTask(movieAdapter);
+        SearchMovieTask task = new SearchMovieTask(movieList, movieAdapter);
         String title = editText.getText().toString();
 
         //Hide the keyboard

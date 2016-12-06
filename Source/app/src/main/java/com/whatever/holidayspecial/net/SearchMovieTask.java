@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.whatever.holidayspecial.Movie;
+import com.whatever.holidayspecial.MovieAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 
 /**
  * Created by cergo on 06/12/16.
@@ -25,12 +27,14 @@ import java.net.URL;
 
 public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
 
-    private ArrayAdapter<Movie> adapter;
+    private Collection<Movie> collection;
+    private MovieAdapter adapter;
     private String type = "movie";
 
     private static String baseURL = "https://www.omdbapi.com/?r=json&v=1&";
 
-    public SearchMovieTask(ArrayAdapter<Movie> adapter) {
+    public SearchMovieTask(Collection<Movie> collection, MovieAdapter adapter) {
+        this.collection = collection;
         this.adapter = adapter;
     }
 
@@ -106,7 +110,11 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
      */
     @Override
     public void onProgressUpdate(Movie... movies) {
-        adapter.addAll(movies);
+        if (movies == null || movies.length == 0)
+            return;
+        for (int i = 0; i < movies.length; i++)
+            collection.add(movies[i]);
+
         adapter.notifyDataSetChanged();
     }
 }
