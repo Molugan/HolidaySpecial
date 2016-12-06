@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.whatever.holidayspecial.net.ImageTask;
+
 /**
  * Created by Morgane on 26/11/16.
  */
@@ -50,15 +52,14 @@ public class MovieView extends LinearLayout {
         releaseDate.setText(date);
     }
 
-    public void updateFromMovie(Movie movie){
-
+    public void updateFromMovie(Movie movie) {
         movieTitle.setText(movie.title);
         movieSynopsis.setText(movie.synopsis);
-        MovieManager manager = MovieManager.getInstance();
-        manager.loadImage(moviePoster, movie.poster);
+        ImageTask task = new ImageTask(moviePoster);
+        task.execute(movie.poster);
     }
 
-    public void reset(){
+    public void reset() {
         movieTitle.setText(R.string.default_movie);
         movieSynopsis.setText(R.string.default_synopsis);
     }
