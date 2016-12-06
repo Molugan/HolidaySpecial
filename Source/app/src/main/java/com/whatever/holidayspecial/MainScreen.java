@@ -14,6 +14,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 
+import com.whatever.holidayspecial.net.SearchMovieTask;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -71,7 +73,10 @@ public class MainScreen extends AppCompatActivity {
 
     public void searchMovie(View view) {
 
+        // Prepare the search task.
         EditText editText = (EditText) findViewById(R.id.edit_message);
+        SearchMovieTask task = new SearchMovieTask(movieAdapter);
+        String title = editText.getText().toString();
 
         //Hide the keyboard
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -80,35 +85,11 @@ public class MainScreen extends AppCompatActivity {
         //Clear the list
         movieList.clear();
 
-        MovieSearchRequest request = new MovieSearchRequest(editText.getText().toString());
-        request.execute();
-        List<Movie> movies = null;
-        try {
-            movies = request.get();
-        } catch (InterruptedException ex) {
-            Log.d("MainScreen", "search was interrupted");
-        } catch (ExecutionException ex) {
-            Log.d("MainScreen", "search failed for an unknown reason");
-        }
-
         //Clear the text bar
         editText.setText("");
 
-        //Refill it with new results
-        if (movies == null || movies.isEmpty())
-        {
-            //Don't forget to notify the adapter
-            movieAdapter.notifyDataSetChanged();
-
-            return;
-        }
-
-        ListIterator<Movie> iterator = movies.listIterator();
-        while (iterator.hasNext()) {
-            movieList.add(iterator.next());
-        }
-
-        //Don't forget to notify the adapter
+        // Start search.
+        task.execute(title);
         movieAdapter.notifyDataSetChanged();
     }
 

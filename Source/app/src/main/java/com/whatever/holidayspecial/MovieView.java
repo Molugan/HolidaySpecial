@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.whatever.holidayspecial.net.ImageTask;
+
 /**
  * Created by Morgane on 26/11/16.
  */
@@ -17,7 +19,7 @@ import android.widget.TextView;
 public class MovieView extends LinearLayout {
 
     private View mValue;
-    private ImageView mImage;
+    private ImageView moviePoster;
     private TextView movieTitle;
     private TextView movieSynopsis;
     private TextView releaseDate;
@@ -43,20 +45,21 @@ public class MovieView extends LinearLayout {
         movieSynopsis = (TextView) findViewById(R.id.synopsis);
         movieSynopsis.setText(synopsis);
 
-        mImage =(ImageView) findViewById(R.id.poster);
-        mImage.setImageResource(R.drawable.shrek);
+        moviePoster =(ImageView) findViewById(R.id.poster);
+        moviePoster.setImageResource(R.drawable.shrek);
 
         releaseDate = (TextView) findViewById(R.id.releaseDate);
         releaseDate.setText(date);
     }
 
-    public void updateFromMovie(Movie movie){
-
+    public void updateFromMovie(Movie movie) {
         movieTitle.setText(movie.title);
         movieSynopsis.setText(movie.synopsis);
+        ImageTask task = new ImageTask(moviePoster);
+        task.execute(movie.poster);
     }
 
-    public void reset(){
+    public void reset() {
         movieTitle.setText(R.string.default_movie);
         movieSynopsis.setText(R.string.default_synopsis);
     }

@@ -2,6 +2,7 @@ package com.whatever.holidayspecial;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.Date;
 
 /**
  * Created by Morgane on 26/11/16.
@@ -26,6 +27,7 @@ public class Movie {
     public String imdbRating;
     public String imdbVotes;
     public String imdbId;
+
 
     /**
      * Extract movie information from omdb JSON response.
@@ -53,4 +55,5 @@ public class Movie {
 
     public Movie() {
     }
+
 }
