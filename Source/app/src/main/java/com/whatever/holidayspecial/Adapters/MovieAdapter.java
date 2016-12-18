@@ -1,4 +1,4 @@
-package com.whatever.holidayspecial;
+package com.whatever.holidayspecial.Adapters;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 import android.content.Context;
 import android.view.ViewGroup;
+
+import com.whatever.holidayspecial.Movie;
+import com.whatever.holidayspecial.R;
+
 import java.util.ArrayList;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
@@ -30,14 +34,11 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.view_movie_item, parent, false);
+                    m_layout, parent, false);
         }
 
-        // Lookup view for data population
-        TextView tvName = (TextView) convertView.findViewById(R.id.name);
-
-        // Populate the data into the template view using the data object
-        tvName.setText(movie.title);
+        // Init the selected view
+        InitViewFromMovie(movie, convertView);
 
         // Return the completed view to render on screen
         if (position == mSelectedItem) {
@@ -49,6 +50,10 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         return convertView;
 
+    }
+
+    //Must be overrided
+    protected void InitViewFromMovie(Movie movie, View convertView){
     }
 
 }

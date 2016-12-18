@@ -3,9 +3,9 @@
     android:layout_height="fill_parent">
 
     <ListView
-        android:id="@+id/my_movie_list"
+        android:id="@+id/selected_movies_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="400dp"
         />
 
     <Button

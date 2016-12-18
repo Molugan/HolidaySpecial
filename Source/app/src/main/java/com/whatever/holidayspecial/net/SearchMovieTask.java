@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.whatever.holidayspecial.Movie;
-import com.whatever.holidayspecial.MovieAdapter;
+import com.whatever.holidayspecial.Adapters.MovieAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

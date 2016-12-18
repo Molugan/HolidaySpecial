@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 
 import com.whatever.holidayspecial.Movie;
-import com.whatever.holidayspecial.MovieAdapter;
+import com.whatever.holidayspecial.Adapters.MovieAdapterSearchScreen;
 import com.whatever.holidayspecial.MovieView;
 import com.whatever.holidayspecial.R;
 import com.whatever.holidayspecial.net.SearchMovieTask;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MovieSearchScreen extends AppCompatActivity {
 
     private ArrayList<Movie> movieList;
-    private MovieAdapter movieAdapter;
+    private MovieAdapterSearchScreen movieAdapter;
     private MovieView movieView;
 
     @Override
@@ -34,7 +34,7 @@ public class MovieSearchScreen extends AppCompatActivity {
         setContentView(R.layout.activity_search_movie);
 
         movieList = new ArrayList<Movie>();
-        movieAdapter = new MovieAdapter(this, movieList);
+        movieAdapter = new MovieAdapterSearchScreen(this, movieList);
         ListView listV = (ListView) findViewById(R.id.movie_list);
         listV.setAdapter(movieAdapter);
         listV.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -44,7 +44,7 @@ public class MovieSearchScreen extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
                 view.setSelected(true);
-                MovieAdapter mp = (MovieAdapter) parent.getAdapter();
+                MovieAdapterSearchScreen mp = (MovieAdapterSearchScreen) parent.getAdapter();
                 movieView = (MovieView) findViewById(R.id.movie_screen);
 
                 movieView.updateFromMovie(movieList.get(position));
@@ -91,36 +91,6 @@ public class MovieSearchScreen extends AppCompatActivity {
 
         // Start search.
         task.execute(title);
-        movieAdapter.notifyDataSetChanged();
-    }
-
-    public void removeMovie(View view) {
-        int selectedMovie = movieAdapter.mSelectedItem;
-
-        if(selectedMovie == -1)
-        {
-            return;
-        }
-
-        movieList.remove(selectedMovie);
-        selectedMovie--;
-
-        if(selectedMovie < 0 && movieList.size() > 0){
-            selectedMovie = 0;
-        }
-
-        movieAdapter.mSelectedItem = selectedMovie;
-
-        if(selectedMovie > -1){
-            ListView listV = (ListView) findViewById(R.id.movie_list);
-            listV.setSelection(selectedMovie);
-            movieView = (MovieView) findViewById(R.id.movie_screen);
-
-            movieView.updateFromMovie(movieList.get(selectedMovie));
-        }
-        else{
-            movieView.reset();
-        }
         movieAdapter.notifyDataSetChanged();
     }
 
