@@ -91,12 +91,17 @@ public class MovieSearchScreen extends AppCompatActivity {
 
         // Start search.
         task.execute(title);
+        movieAdapter.mSelectedItem = -1;
         movieAdapter.notifyDataSetChanged();
     }
 
     public void selectMovie(View view) {
+
         if (movieList.isEmpty())
             return;
+        if(movieAdapter.mSelectedItem < 0){
+            return;
+        }
 
         Movie currentMovie = movieList.get(movieAdapter.mSelectedItem);
         Intent intent = new Intent(this, MainScreen.class);
