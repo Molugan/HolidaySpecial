@@ -2,9 +2,9 @@ package com.whatever.holidayspecial.net;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.whatever.holidayspecial.Movie;
-import com.whatever.holidayspecial.Adapters.MovieAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,14 +26,12 @@ import java.util.Collection;
 
 public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
 
-    private Collection<Movie> collection;
-    private MovieAdapter adapter;
+    private ArrayAdapter<Movie> adapter;
     private String type = "movie";
 
     private static String baseURL = "https://www.omdbapi.com/?r=json&v=1&";
 
-    public SearchMovieTask(Collection<Movie> collection, MovieAdapter adapter) {
-        this.collection = collection;
+    public SearchMovieTask(ArrayAdapter<Movie> adapter) {
         this.adapter = adapter;
     }
 
@@ -51,6 +49,7 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
      * as possible.
      * @param titles movie titles to search for
      */
+    @Override
     protected Void doInBackground(String... titles) {
         InputStream response = null;
         Log.d("SearchMovieTask", "search for title " + titles[0]);
@@ -79,7 +78,7 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
              * Search result should include the fields :
              *   "Search"
              *   "totalResults"
-             *   "Response"
+             *   "Response"public
              */
             JSONArray results = json.getJSONArray("Search");
             for (int r = 0; r < results.length(); r++) {
@@ -97,8 +96,12 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
             Log.e("SearchMovieTask", "IO exception caught");
         } finally {
             Log.d("SearchMovieTask", "search complete");
-            // if (response != null)
-            //    response.close();
+            try {
+                if (response != null)
+                    response.close();
+                response = null;
+            } catch (IOException ex) {
+            }
         }
         return null;
     }
@@ -108,12 +111,13 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
      * @param movies next search results
      */
     @Override
-    public void onProgressUpdate(Movie... movies) {
-        if (movies == null || movies.length == 0)
-            return;
-        for (int i = 0; i < movies.length; i++)
-            collection.add(movies[i]);
-
+    protected void onProgressUpdate(Movie... movies) {
+        adapter.addAll(movies);
         adapter.notifyDataSetChanged();
+        /**
+         * Send a request at the same time for full movie information.
+         */
+        RequestMovieInfoTask task = new RequestMovieInfoTask();
+        task.execute(movies);
     }
 }

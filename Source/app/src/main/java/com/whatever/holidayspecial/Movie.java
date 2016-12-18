@@ -1,5 +1,7 @@
 package com.whatever.holidayspecial;
 
+import android.os.AsyncTask;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Date;
@@ -17,6 +19,7 @@ public class Movie implements Parcelable {
     public String genre;
     public String type;
     public String year;
+    public String released;
     public String runtime;
     public String director;
     public String writer;
@@ -24,6 +27,7 @@ public class Movie implements Parcelable {
     public String language;
     public String plot;
     public String poster;
+    public String synopsis;
 
     public String metascore;
     public String imdbRating;
@@ -43,13 +47,14 @@ public class Movie implements Parcelable {
         poster = json.getString("Poster");
         imdbId = json.getString("imdbID");
         /* Optional parameters. */
+        released = json.optString("Released");
         genre = json.optString("Genre");
         runtime = json.optString("Runtime");
         director = json.optString("Director");
         writer = json.optString("Writer");
         actors = json.optString("Actors");
         language = json.optString("Language");
-        plot = json.optString("Plot");
+        plot = synopsis = json.optString("Plot");
         metascore = json.optString("Metascore");
         imdbRating = json.optString("imdbRatings");
         imdbVotes = json.optString("imdbVotes");
