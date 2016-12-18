@@ -76,7 +76,7 @@ public class MovieSearchScreen extends AppCompatActivity {
 
         // Prepare the search task.
         EditText editText = (EditText) findViewById(R.id.edit_message);
-        SearchMovieTask task = new SearchMovieTask(movieList, movieAdapter);
+        SearchMovieTask task = new SearchMovieTask(movieAdapter);
         String title = editText.getText().toString();
 
         //Hide the keyboard
