@@ -4,11 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Date;
 
+import android.os.Parcelable;
+import android.os.Parcel;
+
 /**
  * Created by Morgane on 26/11/16.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
 
     public String title;
     public String genre;
@@ -20,7 +23,6 @@ public class Movie {
     public String actors;
     public String language;
     public String plot;
-    public String synopsis;
     public String poster;
 
     public String metascore;
@@ -56,4 +58,60 @@ public class Movie {
     public Movie() {
     }
 
+    public Movie(Parcel in) {
+        String[] data = new String[15];
+        in.readStringArray(data);
+
+        this.title      = data[0];
+        this.genre      = data[1];
+        this.type       = data[2];
+        this.year       = data[3];
+        this.runtime    = data[4];
+        this.director   = data[5];
+        this.writer     = data[6];
+        this.actors     = data[7];
+        this.language   = data[8];
+        this.plot       = data[9];
+        this.poster     = data[10];
+        this.metascore  = data[11];
+        this.imdbRating = data[12];
+        this.imdbVotes  = data[13];
+        this.imdbId     = data[14];
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {
+            this.title,
+            this.genre,
+            this.type,
+            this.year,
+            this.runtime,
+            this.director,
+            this.writer,
+            this.actors,
+            this.language,
+            this.plot,
+            this.poster,
+            this.metascore,
+            this.imdbRating,
+            this.imdbVotes,
+            this.imdbId
+        });
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

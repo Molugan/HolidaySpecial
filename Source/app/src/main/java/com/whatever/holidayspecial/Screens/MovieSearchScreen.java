@@ -1,9 +1,9 @@
-package com.whatever.holidayspecial;
+package com.whatever.holidayspecial.Screens;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,14 +14,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 
+import com.whatever.holidayspecial.Movie;
+import com.whatever.holidayspecial.MovieAdapter;
+import com.whatever.holidayspecial.MovieView;
+import com.whatever.holidayspecial.R;
 import com.whatever.holidayspecial.net.SearchMovieTask;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.concurrent.ExecutionException;
 
-public class MainScreen extends AppCompatActivity {
+public class MovieSearchScreen extends AppCompatActivity {
 
     private ArrayList<Movie> movieList;
     private MovieAdapter movieAdapter;
@@ -30,7 +31,7 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.activity_search_movie);
 
         movieList = new ArrayList<Movie>();
         movieAdapter = new MovieAdapter(this, movieList);
@@ -123,13 +124,15 @@ public class MainScreen extends AppCompatActivity {
         movieAdapter.notifyDataSetChanged();
     }
 
-    public void getMovie(View view) {
+    public void selectMovie(View view) {
         if (movieList.isEmpty())
             return;
 
-        //ListView lv = (ListView) findViewById(R.id.movie_list);
-        //int position = lv.getPositionForView(view);
-        //Movie currentMovie = movieList.get(position);
+        Movie currentMovie = movieList.get(movieAdapter.mSelectedItem);
+        Intent intent = new Intent(this, MainScreen.class);
+        intent.putExtra("SELECTED_MOVIE", currentMovie);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 }

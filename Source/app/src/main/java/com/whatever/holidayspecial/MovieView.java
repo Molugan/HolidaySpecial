@@ -54,7 +54,7 @@ public class MovieView extends LinearLayout {
 
     public void updateFromMovie(Movie movie) {
         movieTitle.setText(movie.title);
-        movieSynopsis.setText(movie.synopsis);
+        movieSynopsis.setText(movie.plot);
         ImageTask task = new ImageTask(moviePoster);
         task.execute(movie.poster);
     }

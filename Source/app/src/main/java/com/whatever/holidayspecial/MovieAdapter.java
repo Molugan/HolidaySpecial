@@ -11,12 +11,13 @@ import java.util.ArrayList;
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     public int mSelectedItem;
+    protected int m_layout;
 
     public MovieAdapter(Context context, ArrayList<Movie> movies) {
 
         super(context, 0, movies);
         mSelectedItem = -1;
-
+        m_layout = 0;
     }
 
 
@@ -51,3 +52,4 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     }
 
 }
+

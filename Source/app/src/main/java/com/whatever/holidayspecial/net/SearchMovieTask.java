@@ -2,7 +2,6 @@ package com.whatever.holidayspecial.net;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.whatever.holidayspecial.Movie;
 import com.whatever.holidayspecial.MovieAdapter;
