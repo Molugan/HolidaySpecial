@@ -3,6 +3,8 @@ package com.whatever.holidayspecial.net;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.view.View;
 
 import com.whatever.holidayspecial.Movie;
 
@@ -19,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by cergo on 06/12/16.
@@ -28,11 +32,13 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
 
     private ArrayAdapter<Movie> adapter;
     private String type = "movie";
+    private ProgressBar bar;
 
     private static String baseURL = "https://www.omdbapi.com/?r=json&v=1&";
 
-    public SearchMovieTask(ArrayAdapter<Movie> adapter) {
+    public SearchMovieTask(ArrayAdapter<Movie> adapter, ProgressBar bar) {
         this.adapter = adapter;
+        this.bar = bar;
     }
 
     private URL url(String title) throws MalformedURLException {
@@ -41,6 +47,16 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
         if (type != null)
             fullURL.append("&type=").append(type);
         return new URL(fullURL.toString());
+    }
+
+    @Override
+    protected void onPreExecute(){
+        bar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+        bar.setVisibility(View.GONE);
     }
 
     /**
@@ -118,6 +134,21 @@ public class SearchMovieTask extends AsyncTask<String, Movie, Void> {
          * Send a request at the same time for full movie information.
          */
         RequestMovieInfoTask task = new RequestMovieInfoTask();
-        task.execute(movies);
+        try{
+            task.execute(movies).get();
+        }
+        catch (InterruptedException ex){
+            Log.e("SearchMovieTask", "Interrupted exception caught");
+        }
+        catch(ExecutionException ex){
+            Log.e("SearchMovieTask", "Execution exception caught");
+        }
+
+        adapter.sort(new Comparator<Movie>() {
+            @Override
+            public int compare(Movie movie, Movie t1) {
+                return t1.released.compareTo(movie.released);
+            }
+        });
     }
 }

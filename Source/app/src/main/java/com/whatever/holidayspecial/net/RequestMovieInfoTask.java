@@ -75,6 +75,7 @@ public class RequestMovieInfoTask extends AsyncTask<Movie, Void, Void> {
                 String line;
                 while ((line = jsonStreamReader.readLine()) != null)
                     jsonSringBuilder.append(line);
+                Log.d("SearchMovieTask", jsonSringBuilder.toString());
                 JSONTokener tokener = new JSONTokener(jsonSringBuilder.toString());
                 JSONObject json = new JSONObject(tokener);
                 movies[i].parse(json);

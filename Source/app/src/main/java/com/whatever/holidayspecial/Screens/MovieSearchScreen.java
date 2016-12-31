@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 
@@ -27,11 +28,14 @@ public class MovieSearchScreen extends AppCompatActivity {
     private ArrayList<Movie> movieList;
     private MovieAdapterSearchScreen movieAdapter;
     private MovieView movieView;
+    private ProgressBar movieProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_movie);
+
+        movieProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         movieList = new ArrayList<Movie>();
         movieAdapter = new MovieAdapterSearchScreen(this, movieList);
@@ -76,7 +80,7 @@ public class MovieSearchScreen extends AppCompatActivity {
 
         // Prepare the search task.
         EditText editText = (EditText) findViewById(R.id.edit_message);
-        SearchMovieTask task = new SearchMovieTask(movieAdapter);
+        SearchMovieTask task = new SearchMovieTask(movieAdapter, movieProgressBar);
         String title = editText.getText().toString();
 
         //Hide the keyboard

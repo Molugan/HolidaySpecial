@@ -4,22 +4,26 @@ import android.os.AsyncTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.util.Date;
 
 import android.os.Parcelable;
 import android.os.Parcel;
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Morgane on 26/11/16.
  */
 
-public class Movie implements Parcelable {
+public class Movie implements Parcelable, Comparable<Movie> {
 
     public String title;
     public String genre;
     public String type;
-    public String year;
-    public String released;
+    public Date released;
     public String runtime;
     public String director;
     public String writer;
@@ -34,7 +38,7 @@ public class Movie implements Parcelable {
     public String imdbVotes;
     public String imdbId;
 
-
+    public static final SimpleDateFormat standardDateformat = new SimpleDateFormat("dd MMM yyyy");
     /**
      * Extract movie information from omdb JSON response.
      * @param json omdb search result
@@ -42,12 +46,10 @@ public class Movie implements Parcelable {
     public void parse(JSONObject json) throws JSONException {
         /* Required parameters. */
         title = json.getString("Title");
-        year = json.getString("Year");
         type = json.getString("Type");
         poster = json.getString("Poster");
         imdbId = json.getString("imdbID");
         /* Optional parameters. */
-        released = json.optString("Released");
         genre = json.optString("Genre");
         runtime = json.optString("Runtime");
         director = json.optString("Director");
@@ -58,6 +60,8 @@ public class Movie implements Parcelable {
         metascore = json.optString("Metascore");
         imdbRating = json.optString("imdbRatings");
         imdbVotes = json.optString("imdbVotes");
+
+        parseDate(json.optString("Released"));
     }
 
     public Movie() {
@@ -70,7 +74,6 @@ public class Movie implements Parcelable {
         this.title      = data[0];
         this.genre      = data[1];
         this.type       = data[2];
-        this.year       = data[3];
         this.runtime    = data[4];
         this.director   = data[5];
         this.writer     = data[6];
@@ -82,6 +85,13 @@ public class Movie implements Parcelable {
         this.imdbRating = data[12];
         this.imdbVotes  = data[13];
         this.imdbId     = data[14];
+
+        try{
+            this.released   = standardDateformat.parse(data[3]);
+        }
+        catch (ParseException ex){
+            this.released = new Date();
+        }
     }
 
     @Override
@@ -95,7 +105,7 @@ public class Movie implements Parcelable {
             this.title,
             this.genre,
             this.type,
-            this.year,
+            this.released.toString(),
             this.runtime,
             this.director,
             this.writer,
@@ -119,4 +129,28 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public String getDateSTR(){
+        return standardDateformat.format(released);
+
+    }
+
+    private boolean parseDate(String dateSTR){
+
+        try {
+            released = standardDateformat.parse(dateSTR);
+        }
+        catch (ParseException ex){
+            return false;
+        }
+
+        Log.d("ParseDate", dateSTR.toString());
+
+        return true;
+    };
+
+    @Override
+    public int compareTo(Movie o) {
+        return released.compareTo(o.released);
+    }
 }
